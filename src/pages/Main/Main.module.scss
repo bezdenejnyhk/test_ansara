@@ -1,0 +1,160 @@
+.conteiner {
+  min-width: 500px;
+  width: 100%;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  &_form {
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 20px;
+    position: relative;
+  }
+  &_block {
+    position: relative;
+  }
+  &_task {
+    margin-right: 8px;
+    background-color: rgba(229, 229, 229, 0.25);
+    border-radius: 8px;
+    padding-left: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    max-width: 460px;
+    width: 100%;
+    min-height: 40px;
+    transition: opacity 0.2s ease;
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+    }
+    &:focus {
+      outline: 1px solid rgba(84, 124, 251, 1);
+    }
+  }
+}
+
+.icon {
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 17px;
+  position: absolute;
+  cursor: pointer;
+  &_play {
+    top: 19px;
+    transform: translateY(-50%);
+    right: 8px;
+    position: absolute;
+    cursor: pointer;
+  }
+}
+
+.list {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 101px;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  &_task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+    padding: 20px 0 20px;
+    color: rgba(255, 255, 255, 1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+  }
+  &_item {
+    max-width: 282px;
+    margin: 0;
+    margin-right: 38px;
+  }
+  &_count {
+    margin: 0;
+    color: rgba(84, 124, 251, 1);
+  }
+  &_header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    padding-bottom: 16px;
+  }
+  &_icon {
+    position: absolute;
+    top: 2px;
+    right: 389px;
+    cursor: pointer;
+    &:hover {
+    }
+  }
+  &_time {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23px;
+    color: rgba(84, 124, 251, 1);
+    margin: 0;
+  }
+  &_title {
+    color: rgba(255, 255, 255, 1);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 23px;
+    text-align: left;
+    margin: 0;
+  }
+}
+
+.field {
+  &_input {
+    padding: 12px 15px;
+    border: none;
+    outline: none;
+    background-color: rgba(229, 229, 229, 0.25);
+    line-height: 1;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 100%;
+    height: 40px;
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.1);
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+    }
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+    }
+    &:focus {
+      outline: 1px solid rgba(84, 124, 251, 1);
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+}
+
+.button {
+  display: flex;
+  gap: 20px;
+}
+
+// @media screen and (max-width: 570px) {
+//   .conteiner {
+//     min-width: 360px;
+//     &_task {
+//       max-width: 300px;
+//       width: 100%;
+//     }
+//   }
+// }
