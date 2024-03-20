@@ -1,28 +1,28 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { loginUser, setAuth } from "../../services/slices/user";
+import { APP_ROUTES } from '../../constants'
 
 export const Login: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [typeInput, setTypeInput] = useState<boolean>(true);
-  let location = useLocation();
   const { isAuth, isError } = useAppSelector((state) => state.user);
 
   const handleSubmit = () => {
-    console.log(email, password);
     dispatch(loginUser(email, password));
     setEmail("");
     setPassword("");
   };
 
-  if (isAuth) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
+  useEffect(() => {
+    if (isAuth) {
+      navigate(APP_ROUTES.MAIN_PAGE)
+    }
+  }, [isAuth]);
 
   return (
     <div className={styles.container}>
@@ -38,7 +38,7 @@ export const Login: FC = () => {
         </label>
         <label className={styles.label}>
           <input
-            type={typeInput ? "password" : "text"}
+            type="password"
             className={`${styles.input} ${styles.input_error}`}
             placeholder="Пароль"
             onChange={(e) => setPassword(e.target.value)}

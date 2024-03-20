@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TUser } from "../../types/TUser";
 import Cookies from "js-cookie";
 import { signIn } from "../../Api/api";
+import { userNameKey } from '../../constants'
+import { authTokenKey } from '../../auth/auth'
 
 interface userState {
   user: TUser;
@@ -12,9 +14,13 @@ interface userState {
   isLoadingUser: boolean;
 }
 
+interface AuthorizeResponse {
+  token: string;
+  username: string;
+}
+
 const initialStateLogout: userState = {
   user: {
-    id: 0,
     username: "",
     password: "",
   },
@@ -25,11 +31,10 @@ const initialStateLogout: userState = {
 
 const initialState: userState = {
   user: {
-    id: 0,
-    username: "",
+    username: localStorage.getItem(userNameKey) || "",
     password: "",
   },
-  isAuth: !!Cookies.get("accessToken"),
+  isAuth: !!Cookies.get(authTokenKey),
   isError: false,
   isLoadingUser: false,
 };
@@ -40,7 +45,6 @@ export const userSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<TUser>) {
       state.user = action.payload;
-      state.isAuth = true;
     },
     setAuth(state, action: PayloadAction<boolean>) {
       state.isAuth = action.payload;
@@ -85,12 +89,15 @@ export const loginUser: AppThunk =
   (username: string, password: string) => (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     signIn(username, password)
-      .then((res) => {
-        Cookies.set("accessToken", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        dispatch(setError(false));
-        dispatch(setAuth(true));
-        //dispatch(getUser());
+      .then((res: AuthorizeResponse) => {
+        if (res.token) {
+          Cookies.set(authTokenKey, res.token);
+          localStorage.setItem(userNameKey, res.username);
+          dispatch(setError(false));
+          dispatch(setAuth(true));
+          dispatch(setUser({ username: res.username }));
+        }
+
       })
       .catch((err) => {
         dispatch(setError(true));

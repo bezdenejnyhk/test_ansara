@@ -17,7 +17,7 @@ export const Popup: FC<TPopup> = ({
           className={styles.btnClose}
           onClick={() => setPopupOpen(false)}
         ></button>
-        <form className={styles.popupForm}>{children}</form>
+        <div className={styles.popupForm}>{children}</div>
       </div>
     </div>
   );

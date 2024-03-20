@@ -5,6 +5,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { Main } from "../../pages/Main/Main";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { getTasks } from "../../services/slices/task";
+import { APP_ROUTES } from '../../constants'
 
 export const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,15 +17,15 @@ export const App: FC = () => {
       //dispatch(getUser());
       dispatch(getTasks());
     } else {
-      navigate("/login");
+      navigate(APP_ROUTES.LOGIN_PAGE);
     }
   }, [dispatch, isAuth, navigate]);
 
   return (
     <div className={styles.app}>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Main />} />
+        <Route path={APP_ROUTES.LOGIN_PAGE} element={<Login />} />
+        <Route path={APP_ROUTES.MAIN_PAGE} element={<Main />} />
       </Routes>
     </div>
   );

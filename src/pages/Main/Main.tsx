@@ -2,27 +2,24 @@ import { FC, useState } from "react";
 import styles from "./Main.module.scss";
 import plusCircle from "../../images/plus-circle.svg";
 import playCircle from "../../images/play-circle.svg";
-import { taskList } from "./constants";
 import { Footer } from "../../components/Footer/Footer";
-import { useAppSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { Popup } from "../../components/Popup/Popup";
 import saveIcon from "../../images/save-01.svg";
 import wakeIcon from "../../images/log-out-04.svg";
 import { Button } from "../../components/Button/Button";
+import { addTask } from '../../services/slices/task'
 
 export const Main: FC = () => {
-  const [isTask, setIsTask] = useState("");
+  const [taskName, setTaskName] = useState("");
   const [currentTask, setCurrentTask] = useState("");
   const [editTask, setEditTask] = useState(false);
-  const { task } = useAppSelector((state) => state.task);
-  //console.log(task);
+  const { tasks } = useAppSelector((state) => state.task);
+  const dispatch = useAppDispatch();
 
-  const addTask = () => {
-    const newTask = {
-      name: isTask,
-    };
-    console.log(newTask);
-    setIsTask("");
+  const handleAddTask = () => {
+    dispatch(addTask({ task: taskName, started: false }))
+    setTaskName("");
   };
 
   return (
@@ -32,24 +29,26 @@ export const Main: FC = () => {
           <input
             className={styles.conteiner_task}
             type="text"
-            value={isTask}
-            onChange={(e) => setIsTask(e.target.value)}
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
           ></input>
           <img
             src={plusCircle}
             alt="Иконка плюсик"
             className={styles.icon}
-            onClick={addTask}
+            onClick={() => {
+              !!taskName && handleAddTask()
+            }}
           />
         </label>
         <img src={playCircle} alt="Иконка play" className={styles.icon_play} />
       </form>
       <ul className={styles.list}>
-        {taskList.map((item) => (
-          <li className={styles.list_task} onClick={() => setEditTask(true)}>
-            <p className={styles.list_item}>{item.task}</p>
-            <p className={styles.list_item}>{item.time}</p>
-            <p className={styles.list_count}>{item.count}</p>
+        {tasks?.map((item, index) => (
+          <li key={index} className={styles.list_task} onClick={() => setEditTask(true)}>
+            <p className={styles.list_item}>{item.name}</p>
+            <p className={styles.list_item}>{item.datestart} - {item.dateend}</p>
+            <p className={styles.list_count}>0:01</p>
           </li>
         ))}
       </ul>
@@ -60,7 +59,7 @@ export const Main: FC = () => {
             src={plusCircle}
             alt="Иконка плюсик"
             className={styles.list_icon}
-            onClick={addTask}
+            onClick={handleAddTask}
           />
           <p className={styles.list_time}>2 ч 45 м</p>
         </div>

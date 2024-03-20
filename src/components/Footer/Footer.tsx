@@ -8,13 +8,27 @@ import wakeIcon from "../../images/log-out-04.svg";
 import { Popup } from "../Popup/Popup";
 import { useAppSelector } from "../../services/hooks";
 import { Button } from "../Button/Button";
+import { useNavigate } from 'react-router-dom'
+import { APP_ROUTES } from '../../constants'
+import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux'
+import { setAuth } from '../../services/slices/user'
+import { authTokenKey } from '../../auth/auth'
 
 export const Footer: FC = () => {
   const { user } = useAppSelector((state) => state.user);
   const [popupUser, setPopupUser] = useState(false);
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState(user.username);
   const [currentPassword, setCurrentPassword] = useState("");
-  console.log(user);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  function handleLogout(e: Event) {
+    Cookies.remove(authTokenKey);
+    dispatch(setAuth(false))
+    navigate(APP_ROUTES.LOGIN_PAGE);
+  }
+
   return (
     <div className={styles.footer}>
       <div className={styles.info}>
@@ -35,7 +49,7 @@ export const Footer: FC = () => {
       </div>
       <div className={styles.info} onClick={() => setPopupUser(true)}>
         <img src={userIcon} alt="Иконка профиль" className={styles.icon_user} />
-        <p className={styles.text}>userName1</p>
+        <p className={styles.text}>{user.username}</p>
       </div>
       <Popup
         isOpen={popupUser}
@@ -65,9 +79,10 @@ export const Footer: FC = () => {
               icon={saveIcon}
             ></Button>
             <Button
+              type="button"
               text={"Выйти"}
               color={"black"}
-              onClick={onclick}
+              onClick={handleLogout}
               icon={wakeIcon}
             ></Button>
           </div>
